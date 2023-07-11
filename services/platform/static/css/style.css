@@ -1,0 +1,8 @@
+:root {
+  --siemens: #009999;
+}
+
+.sButton {
+  background-color: var(--siemens);
+  color: white;
+}
