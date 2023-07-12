@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Dataset
+{% endblock title %}
+
+{% block extra_scripts %}
+    <script src="{{ url_for('static', filename ='js/sentiment.js') }}" type="text/javascript"></script>
+{% endblock extra_scripts %}
+
+{% block content %}
+    <div class="d-flex justify-content-center">
+        <div class="row mx-3">
+            <div class="col-8">
+                <div class="overflow-auto bg-light" style="max-height: 500px;">
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th scope="col">Review</th>
+                          <th scope="col">Score</th>
+                          <th scope="col">Sentiment</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for d, s in sentiments_dataset %}
+                        <tr>
+                          <td>{{d}}</td>
+                          <td>{{s}}</td>
+                          <td>
+                              {% if s < 0.3 %}
+                            <img class="emojiLogo" src="{{url_for('static', filename = 'imgs/angry.png')}}">
+                            {% elif s < 0.8 %}
+                            <img class="emojiLogo" src="{{url_for('static', filename = 'imgs/meh.png')}}">
+                            {% else %}
+                            <img class="emojiLogo" src="{{url_for('static', filename = 'imgs/happy.png')}}">
+                            {% endif %}
+                          </td>
+                        </tr>
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col-3">
+                <canvas id="sentimentsChart" width="20" height="20" role="img" aria-label="p4"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="d-flex p-5 justify-content-center">
+        <div class="btn-group-lg" role="group" aria-label="Basic example">
+          <button type="button" class="btn sButton">Sentiment analysis</button>
+          <button type="button" class="btn sButton">Back</button>
+        </div>
+    </div>
+{% endblock content %}
