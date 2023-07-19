@@ -4,9 +4,12 @@ from typing import List
 from flask import Flask, render_template, request
 from flask_pymongo import PyMongo
 from collections import Counter
+
+from pymongo import UpdateOne
+
 from core_api import get_sentiments, preprocess_corpus
 from models.review_instance import raw_data_to_review_instance
-from mongo import add_collection, get_all_documents
+from mongo import add_collection, get_all_documents, update_sentiments
 from os.path import splitext
 import logging
 
@@ -61,23 +64,37 @@ def sentiments():
     logger.info(f"Retrieving data from {collection_name} collection...")
 
     dataset = get_all_documents(database=db, collection_name=collection_name)
+
     processed_text = [d.get("processed_text") for d in dataset]
+
     raw_data = [d.get("raw_text") for d in dataset]
+
     logger.info(f"Sending collection {collection_name} to sentiments detection")
+
     sents = get_sentiments(data=processed_text)
+
+    logger.info(f"Updating collection {collection_name} with sentiments information")
+
+    ret = update_sentiments(
+        database=db,
+        collection_name=collection_name,
+        documents=dataset,
+        sentiments=sents
+    )
 
     return render_template("sentiments.html",
                            sentiments_dataset=zip(raw_data, sents),
                            len_dataset=len(raw_data),
-                           sentiments_count=count_sentiments(sentiments=sents),
+                           sentiments_count=count_sentiments(sns=sents),
                            mean_sentiment=round(mean(sents),2))
 
 
-def count_sentiments(sentiments: List[int]):
-    cnter = Counter(sentiments)
+def count_sentiments(sns: List[int]):
+    counter = Counter(sns)
 
-    return list({k: cnter.get(k, 0) for k in range(1, 6)}.values())
+    return list({k: counter.get(k, 0) for k in range(1, 6)}.values())
 
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080, debug=True)
+

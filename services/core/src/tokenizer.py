@@ -1,18 +1,6 @@
-from transformers import AutoTokenizer
-from tokenizers import Tokenizer
 import pandas as pd
 
-raw_inputs = open("../data/reviews.txt").readlines()
-
-"""tokenizer = Tokenizer.from_pretrained("bert-base-uncased")
-inputs = tokenizer.encode(raw_inputs)
-
-
-
-print(inputs.tokens)
-print(inputs.attention_mask)
-"""
-from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
+from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.feature_extraction.text import TfidfTransformer
 
 tfidf_vectorizer=TfidfVectorizer(use_idf=True)
@@ -23,3 +11,4 @@ df = pd.DataFrame(tfidf_vectorizer_vectors.sum(axis=0).T, index=tfidf_vectorizer
 print(df.sort_values(by=["tfidf"],ascending=False).head(45))
 print(df.shape)
 
+def
