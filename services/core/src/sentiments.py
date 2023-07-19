@@ -27,7 +27,3 @@ def get_sentiments(input_data: List[InputText]) -> List[int]:
             sentiments.append(get_number_of_stars(label=sentiment_pipeline(i_data.text)[0].get("label", "1 stars")))
     return sentiments
 
-
-
-if __name__ == '__main__':
-    print(get_sentiments(input_data=[InputText(text=txt)]))

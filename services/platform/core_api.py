@@ -15,3 +15,15 @@ def preprocess_corpus(data: List[str]):
     url = f"{CORE_API_PATH}/preprocess"
     ret = requests.post(url, json=[{"text": txt} for txt in data])
     return ret.json()
+
+
+def train_tfidf(data: List[str]):
+    url = f"{CORE_API_PATH}/tfidffit"
+    ret = requests.post(url, json=[{"text": txt} for txt in data])
+    return ret.json()
+
+
+def predict_tfidf(data: List[str]):
+    url = f"{CORE_API_PATH}/tfidfpredict"
+    ret = requests.post(url, json=[{"text": txt} for txt in data])
+    return ret.json()

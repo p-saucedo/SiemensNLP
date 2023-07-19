@@ -7,9 +7,9 @@ from collections import Counter
 
 from pymongo import UpdateOne
 
-from core_api import get_sentiments, preprocess_corpus
+from core_api import get_sentiments, preprocess_corpus, train_tfidf, predict_tfidf
 from models.review_instance import raw_data_to_review_instance
-from mongo import add_collection, get_all_documents, update_sentiments
+from mongo import add_collection, get_all_documents, update_sentiments, get_documents_by_sentiment
 from os.path import splitext
 import logging
 
@@ -86,7 +86,8 @@ def sentiments():
                            sentiments_dataset=zip(raw_data, sents),
                            len_dataset=len(raw_data),
                            sentiments_count=count_sentiments(sns=sents),
-                           mean_sentiment=round(mean(sents),2))
+                           mean_sentiment=round(mean(sents), 2),
+                           collection_name=collection_name)
 
 
 def count_sentiments(sns: List[int]):
@@ -95,6 +96,30 @@ def count_sentiments(sns: List[int]):
     return list({k: counter.get(k, 0) for k in range(1, 6)}.values())
 
 
+@app.route('/tfidf', methods=["POST"])
+def tfidf():
+    collection_name = request.form.get("collectionName", "col1")
+
+    logger.info(f"Retrieving data from {collection_name} collection...")
+
+    dataset = get_all_documents(database=db, collection_name=collection_name)
+
+    processed_text = [d.get("processed_text") for d in dataset]
+
+    train_tfidf(data=processed_text)
+
+    results = {}
+    for i in range(1, 6):
+        doc_subset = get_documents_by_sentiment(database=db,
+                                                collection_name=collection_name,
+                                                sentiment_min=i)
+        ret = predict_tfidf(data=[doc.get("processed_text") for doc in doc_subset])
+        results[i] = list(ret.keys())[:10]
+
+    return render_template("tfidf.html",
+                           tfidf_values=results,
+                           collection_name=collection_name)
+
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080, debug=True)
-
