@@ -16,8 +16,8 @@ import logging
 logger = logging.getLogger(__name__)
 app = Flask(__name__)
 
-uri = "mongodb+srv://psaucedo:psaucedo@festival.a0vs7hr.mongodb.net/?retryWrites=true&w=majority"
-# uri = "mongodb://127.0.0.1:27017/Siemens"
+#uri = "mongodb+srv://psaucedo:psaucedo@festival.a0vs7hr.mongodb.net/?retryWrites=true&w=majority"
+uri = "mongodb://mongodb:27017/Siemens"
 app.config["MONGO_URI"] = uri
 mongo = PyMongo(app)
 db = mongo.cx.Siemens
@@ -25,7 +25,7 @@ db = mongo.cx.Siemens
 
 @app.route('/')
 def index():
-    return render_template("index.html", collections=db.list_collection_names())
+    return render_template("index.html")
 
 
 @app.route('/dataset', methods=["POST"])

@@ -37,6 +37,4 @@ async def health():
 
 
 if __name__ == '__main__':
-    from uvicorn_config import config
-
-    uvicorn.run("main:app", port=8081, host='127.0.0.1', reload=True, **config)
+    uvicorn.run("main:app", port=8081, host='127.0.0.1', reload=True)

@@ -5,11 +5,15 @@ version: '3.8'
 services:
   core:
     build: ./services/core
-    command: uvicorn main:app --host 0.0.0.0 --port 8001
+    command: uvicorn main:app --host 0.0.0.0 --port 8081
     ports:
-      - 8001:8001
+      - 8081:8081
   web:
     build: ./services/platform
-    command: flask run --host 0.0.0.0 --port 8000
+    command: flask run --host 0.0.0.0 --port 8080
     ports:
-      - 8000:8000
+      - 8080:8080
+  mongodb:
+    image: mongo:latest
+    ports:
+      - 27017:27017

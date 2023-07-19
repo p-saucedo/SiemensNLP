@@ -52,9 +52,7 @@
             </div>
         </div>
     </div>
-    <form class="d-flex p-5 justify-content-center" action="{{url_for('tfidf')}}" method="post" enctype="multipart/form-data">
-        <input type="hidden" id="collectionName" name="collectionName" value="{{collection_name}}">
-        <input type="submit" class="btn sButton mx-3" value="Next step: TF-IDF">
-        <a href="{{url_for('index')}}" class="btn sButton">Back</a>
+    <form class="d-flex p-5 justify-content-center" action="{{url_for('index')}}">
+        <input type="submit" class="btn sButton mx-3" value="Finish">
     </form>
 {% endblock content %}

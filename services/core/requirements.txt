@@ -4,3 +4,4 @@ nltk
 pandas
 uvicorn[standard]
 torch
+scikit-learn

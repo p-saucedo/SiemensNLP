@@ -2,8 +2,8 @@ from typing import List
 
 import requests
 
-CORE_API_PATH = "http://127.0.0.1:8081"
-
+#CORE_API_PATH = "http://127.0.0.1:8081" # local
+CORE_API_PATH = "http://core:8081" # dev
 
 def get_sentiments(data: List[str]):
     url = f"{CORE_API_PATH}/sentiment"
