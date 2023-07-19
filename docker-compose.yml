@@ -1,0 +1,15 @@
+
+
+version: '3.8'
+
+services:
+  core:
+    build: ./services/core
+    command: uvicorn main:app --host 0.0.0.0 --port 8001
+    ports:
+      - 8001:8001
+  web:
+    build: ./services/platform
+    command: flask run --host 0.0.0.0 --port 8000
+    ports:
+      - 8000:8000

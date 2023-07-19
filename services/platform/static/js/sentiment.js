@@ -1,38 +1,44 @@
 $(document).ready(function() {
     var ctx = document.getElementById("sentimentsChart");
 
-    var dataValues = [12, 19, 3, 5];
-    var dataLabels = [0, 1, 2, 3, 4];
+    var dataValues = cntValues;
+    var dataLabels = [1,2,3,4,5];
     var myChart = new Chart(ctx, {
       type: 'bar',
       data: {
         labels: dataLabels,
         datasets: [{
-          label: 'Group A',
           data: dataValues,
-          backgroundColor: 'rgba(255, 99, 132, 1)',
+          backgroundColor: 'rgb(0, 153, 153, 1)',
         }]
       },
       options: {
-        scales: {
-          xAxes: [{
-            display: false,
-            barPercentage: 1.3,
-            ticks: {
-                max: 3,
-            }
-         }, {
+        title: {
             display: true,
-            ticks: {
-                autoSkip: false,
-                max: 4,
-            }
-          }],
-          yAxes: [{
+            text: 'Number of reviews per score',
+         },
+        scales: {
+          x: {
+            title : {
+                display: true,
+                text: "Score given"
+            },
+            display: true
+          },
+          y: {
+            title : {
+                display: true,
+                text: "# of reviews"
+            },
             ticks: {
               beginAtZero:true
             }
-          }]
+          }
+        },
+        plugins: {
+            legend: {
+                display: false
+            }
         }
       }
     });

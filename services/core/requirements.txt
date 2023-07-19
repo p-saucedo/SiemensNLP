@@ -1,0 +1,6 @@
+fastapi
+transformers
+nltk
+pandas
+uvicorn[standard]
+torch

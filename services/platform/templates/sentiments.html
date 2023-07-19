@@ -9,6 +9,9 @@
 {% endblock extra_scripts %}
 
 {% block content %}
+    <script>
+        var cntValues = {{ sentiments_count }}
+    </script>
     <div class="d-flex justify-content-center">
         <div class="row mx-3">
             <div class="col-8">
@@ -17,7 +20,7 @@
                       <thead>
                         <tr>
                           <th scope="col">Review</th>
-                          <th scope="col">Score</th>
+                          <th scope="col">Rate</th>
                           <th scope="col">Sentiment</th>
                         </tr>
                       </thead>
@@ -27,10 +30,14 @@
                           <td>{{d}}</td>
                           <td>{{s}}</td>
                           <td>
-                              {% if s < 0.3 %}
+                              {% if s == 1 %}
                             <img class="emojiLogo" src="{{url_for('static', filename = 'imgs/angry.png')}}">
-                            {% elif s < 0.8 %}
+                            {% elif s == 2 %}
+                            <img class="emojiLogo" src="{{url_for('static', filename = 'imgs/confusion.png')}}">
+                            {% elif s == 3 %}
                             <img class="emojiLogo" src="{{url_for('static', filename = 'imgs/meh.png')}}">
+                            {% elif s == 4 %}
+                            <img class="emojiLogo" src="{{url_for('static', filename = 'imgs/guino.png')}}">
                             {% else %}
                             <img class="emojiLogo" src="{{url_for('static', filename = 'imgs/happy.png')}}">
                             {% endif %}
@@ -43,6 +50,21 @@
             </div>
             <div class="col-3">
                 <canvas id="sentimentsChart" width="20" height="20" role="img" aria-label="p4"></canvas>
+                <hr>
+                <p> The mean score is <b>{{mean_sentiment}}</b>.</p>
+
+                {% if mean_sentiment|round(0, 'ceil')|int == 1 %}
+                <img class="emojiLogoSm" src="{{url_for('static', filename = 'imgs/angry.png')}}">
+                {% elif mean_sentiment|round(0, 'ceil')|int  == 2 %}
+                <img class="emojiLogoSm" src="{{url_for('static', filename = 'imgs/confusion.png')}}">
+                {% elif mean_sentiment|round(0, 'ceil')|int  == 3 %}
+                <img class="emojiLogoSm" src="{{url_for('static', filename = 'imgs/meh.png')}}">
+                {% elif mean_sentiment|round(0, 'ceil')|int  == 4 %}
+                <img class="emojiLogoSm" src="{{url_for('static', filename = 'imgs/guino.png')}}">
+                {% else %}
+                <img class="emojiLogoSm" src="{{url_for('static', filename = 'imgs/happy.png')}}">
+                {% endif %}
+
             </div>
         </div>
     </div>
